@@ -1,35 +1,109 @@
 import 'dart:math';
+import 'dart:io';
+import 'package:tflite/tflite.dart';
 
-class expquo {
-  final String id, nama;
-  final Map<String, num> exp;
+loadModel() async {
+  await Tflite.loadModel(
+    model: "assets/model_exp.tflite",
+    labels: "assets/labels_exp.txt",
+  );
+}
 
-  Angry = angry;
-  expquo({this.id, this.nama, this.exp});
+abstract class Quoter {
+  String getQuote(int index);
+}
 
-  static List<expquo> fetchAll() {
-    return expquo([
-      expquo(id: '0', nama: 'Angry', exp: {
-          for (var angry = num; angry>=7;i--){
-            factorial *= angry;
-          }
-          print(factorial)
-      ]}),
-      expquo(id: '1', nama: 'Disgust', exp: {
+class AngryQuotes extends Quoter {
+  var quotes = {0: "angry me", 1: "angry you"};
 
-      }),
-      expquo(id: '2', nama: 'Happy', exp: {
+  @override
+  String getQuote(int index) {
+    return quotes[index];
+  }
+}
 
-      }),
-      expquo(id: '3', nama: 'Fear', exp: {
+class DisgustQuotes extends Quoter {
+  var quotes = {0: "digust me", 1: "disgust you"};
 
-      }),
-      expquo(id: '4', nama: 'Sad', exp: {
+  @override
+  String getQuote(int index) => quotes[index];
+}
 
-      }),
-      expquo(id: '5', nama: 'Surprise', exp: {
+class FearQuotes extends Quoter {
+  var quotes = {0: "fear me", 1: "fear you"};
 
-      })
-    ];
+  @override
+  String getQuote(int index) => quotes[index];
+}
+
+class HappyQuotes extends Quoter {
+  var quotes = {0: "happy me", 1: "happy you"};
+
+  @override
+  String getQuote(int index) => quotes[index];
+}
+
+class SadQuotes extends Quoter {
+  var quotes = {0: "sad me", 1: "sad you"};
+
+  @override
+  String getQuote(int index) => quotes[index];
+}
+
+class SurpriseQuotes extends Quoter {
+  var quotes = {0: "surprise me", 1: "surprise you"};
+
+  @override
+  String getQuote(int index) => quotes[index];
+}
+
+void main(List<String> arguments) async {
+  // load model
+  // prediksi
+  var output = 2;
+
+  switch (output) {
+    case 1:
+      {
+        var selectedQuotes = AngryQuotes();
+        var index = Random().nextInt(2);
+        print(selectedQuotes.getQuote(index));
+        break;
+      }
+    case 2:
+      {
+        var selectedQuotes = DisgustQuotes();
+        var index = Random().nextInt(2);
+        print(selectedQuotes.getQuote(index));
+        break;
+      }
+    case 3:
+      {
+        var selectedQuotes = DisgustQuotes();
+        var index = Random().nextInt(2);
+        print(selectedQuotes.getQuote(index));
+        break;
+      }
+    case 4:
+      {
+        var selectedQuotes = DisgustQuotes();
+        var index = Random().nextInt(2);
+        print(selectedQuotes.getQuote(index));
+        break;
+      }
+    case 5:
+      {
+        var selectedQuotes = DisgustQuotes();
+        var index = Random().nextInt(2);
+        print(selectedQuotes.getQuote(index));
+        break;
+      }
+    case 6:
+      {
+        var selectedQuotes = DisgustQuotes();
+        var index = Random().nextInt(2);
+        print(selectedQuotes.getQuote(index));
+        break;
+      }
   }
 }
