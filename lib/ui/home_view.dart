@@ -34,6 +34,9 @@ class _HomeViewState extends State<HomeView> {
   /// Scaffold Key
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
+  List<String> listimagepath;
+  int trigger = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,11 +118,11 @@ class _HomeViewState extends State<HomeView> {
           child: FloatingActionButton(
             child: Icon(Icons.camera),
             onPressed: () {
-              for (var i = 0; i <= 15; i++) {
-                _captureAndClassify(results, cameraImage);
-              }
-
-            },
+            //   for (var i = 0; i <= 15; i++) {
+              _captureAndClassify(results, cameraImage);
+            //   }
+            //
+             },
           )),
     );
   }
@@ -146,6 +149,7 @@ class _HomeViewState extends State<HomeView> {
       top = e.renderLocation.top;
       width = e.renderLocation.width;
       height = e.renderLocation.height;
+      log("INI TRIGGER ${trigger}");
 
       imglib.Image convertedImage = ImageUtils.convertCameraImage(cameraImage);
       imglib.Image resizedImage = imglib.copyResize(convertedImage,width: (screenSize.width * 0.75).round());
@@ -164,19 +168,24 @@ class _HomeViewState extends State<HomeView> {
       log("${width.round()}");
       log("${height.round()}");
 
-      String pathFull = MyApp.imgDir;
-      log(pathFull);
-      String namafileFull = 'fullCapt.jpg';
-      pathFull = pathFull + "/" + namafileFull;
-      var jpgFullFile = imglib.encodeJpg(croppedImage);
-      new File(pathFull).writeAsBytesSync(jpgFullFile);
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => testImageConvert(
-                expression: pathFull,
-              )));
-    }).toList();
+
+        String pathFull = MyApp.imgDir;
+        log(pathFull);
+        String namafileFull = 'fullCapt ${trigger}.jpg';
+        pathFull = pathFull + "/" + namafileFull;
+        var jpgFullFile = imglib.encodeJpg(croppedImage);
+        new File(pathFull).writeAsBytesSync(jpgFullFile);
+        trigger++;
+        listimagepath.add(pathFull);
+        if (trigger == 15) {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      testImageConvert(
+                        listimagepath: listimagepath,
+                      )));
+        }}).toList();
   }
 
   /// Callback to get inference results from [CameraView]

@@ -24,14 +24,14 @@ class _ResultViewState extends State<ResultView> {
   ];
   List<double> exp = [];
   Map<String, double> expquo;
-  List<exp> expresquo;
+  // List<exp> expresquo;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     exp = widget.resultClassification as List<double>;
-    expquo = exp.fetchAll();
+    // expquo = exp.fetchAll();
     log(calculateAngry().toString());
     log(calculateDisgust().toString());
     log(calculateFear().toString());
