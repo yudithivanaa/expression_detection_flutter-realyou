@@ -17,8 +17,11 @@ class CameraView extends StatefulWidget {
   /// Callback to inference stats to [HomeView]
   final Function(Stats stats) statsCallback;
 
+  /// Callback to inference cameraImage to [HomeView]
+  final Function(CameraImage cameraImage) cameraImageCallback;
+
   /// Constructor
-  const CameraView(this.resultsCallback, this.statsCallback, void Function(CameraImage cameraImage) cameraImageCallback);
+  const CameraView(this.resultsCallback, this.statsCallback, this.cameraImageCallback);
   @override
   _CameraViewState createState() => _CameraViewState();
 }
@@ -68,7 +71,7 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
 
     // cameras[0] for rear-camera
     cameraController =
-        CameraController(cameras[1], ResolutionPreset.ultraHigh, enableAudio: false);
+        CameraController(cameras[1], ResolutionPreset.low, enableAudio: false);
 
     cameraController.initialize().then((_) async {
       // Stream of image passed to [onLatestImageAvailable] callback
@@ -129,6 +132,9 @@ class _CameraViewState extends State<CameraView> with WidgetsBindingObserver {
 
       var uiThreadInferenceElapsedTime =
           DateTime.now().millisecondsSinceEpoch - uiThreadTimeStart;
+
+      // pass cameraImage to HomeView
+      widget.cameraImageCallback(cameraImage);
 
       // pass results to HomeView
       widget.resultsCallback(inferenceResults["recognitions"]);

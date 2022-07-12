@@ -34,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
   /// Scaffold Key
   GlobalKey<ScaffoldState> scaffoldKey = GlobalKey();
 
-  List<String> listimagepath;
+  List<String> listimagepath = new List();
   int trigger = 0;
 
   @override
@@ -89,20 +89,20 @@ class _HomeViewState extends State<HomeView> {
                             size: 48, color: Colors.blue),
                         (stats != null)
                             ? Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    StatsRow('Inference time:',
-                                        '${stats.inferenceTime} ms'),
-                                    StatsRow('Total prediction time:',
-                                        '${stats.totalElapsedTime} ms'),
-                                    StatsRow('Pre-processing time:',
-                                        '${stats.preProcessingTime} ms'),
-                                    StatsRow('Frame',
-                                        '${CameraViewSingleton.inputImageSize?.width} X ${CameraViewSingleton.inputImageSize?.height}'),
-                                  ],
-                                ),
-                              )
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              StatsRow('Inference time:',
+                                  '${stats.inferenceTime} ms'),
+                              StatsRow('Total prediction time:',
+                                  '${stats.totalElapsedTime} ms'),
+                              StatsRow('Pre-processing time:',
+                                  '${stats.preProcessingTime} ms'),
+                              StatsRow('Frame',
+                                  '${CameraViewSingleton.inputImageSize?.width} X ${CameraViewSingleton.inputImageSize?.height}'),
+                            ],
+                          ),
+                        )
                             : Container()
                       ],
                     ),
@@ -118,11 +118,11 @@ class _HomeViewState extends State<HomeView> {
           child: FloatingActionButton(
             child: Icon(Icons.camera),
             onPressed: () {
-            //   for (var i = 0; i <= 15; i++) {
+              //   for (var i = 0; i <= 15; i++) {
               _captureAndClassify(results, cameraImage);
-            //   }
-            //
-             },
+              //   }
+              //
+            },
           )),
     );
   }
@@ -135,8 +135,8 @@ class _HomeViewState extends State<HomeView> {
     return Stack(
       children: results
           .map((e) => BoxWidget(
-                result: e,
-              ))
+        result: e,
+      ))
           .toList(),
     );
   }
@@ -169,23 +169,24 @@ class _HomeViewState extends State<HomeView> {
       log("${height.round()}");
 
 
-        String pathFull = MyApp.imgDir;
-        log(pathFull);
-        String namafileFull = 'fullCapt ${trigger}.jpg';
-        pathFull = pathFull + "/" + namafileFull;
-        var jpgFullFile = imglib.encodeJpg(croppedImage);
-        new File(pathFull).writeAsBytesSync(jpgFullFile);
-        trigger++;
-        listimagepath.add(pathFull);
-        if (trigger == 15) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      testImageConvert(
-                        listimagepath: listimagepath,
-                      )));
-        }}).toList();
+      String pathFull = MyApp.imgDir;
+      log(pathFull);
+      String namafileFull = 'fullCapt ${trigger}.jpg';
+      pathFull = pathFull + "/" + namafileFull;
+      var jpgFullFile = imglib.encodeJpg(croppedImage);
+      new File(pathFull).writeAsBytesSync(jpgFullFile);
+      trigger++;
+      listimagepath.add(pathFull);
+      log("INI MAP ${listimagepath.toString()}");
+      if (trigger == 15) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    testImageConvert(
+                      listimagepath: listimagepath,
+                    )));
+      }}).toList();
   }
 
   /// Callback to get inference results from [CameraView]
