@@ -13,6 +13,7 @@ import 'package:object_detection/ui/test_image_convert.dart';
 import 'package:object_detection/utils/image_utils.dart';
 import '../main.dart';
 import 'camera_view.dart';
+import 'package:object_detection/model/exp_quo.dart';
 
 
 /// [HomeView] stacks [CameraView] and [BoxWidget]s with bottom sheet for stats
@@ -120,7 +121,10 @@ class _HomeViewState extends State<HomeView> {
             onPressed: () {
               //   for (var i = 0; i <= 15; i++) {
               _captureAndClassify(results, cameraImage);
-              //   }
+              // Navigator.push(
+              //     context,
+              //     MaterialPageRoute(builder: (context) => exp_quo()));
+              // //   }
               //
             },
           )),
@@ -178,7 +182,7 @@ class _HomeViewState extends State<HomeView> {
       trigger++;
       listimagepath.add(pathFull);
       log("INI MAP ${listimagepath.toString()}");
-      if (trigger == 15) {
+      if (trigger == 1) {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(

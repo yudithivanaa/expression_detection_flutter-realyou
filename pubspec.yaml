@@ -58,7 +58,7 @@ flutter:
     - assets/
     - assets/detect.tflite
     - assets/labelmap.txt
-    - assets/model_exp.tflite
+    - assets/model_exp(float).tflite
     - assets/labels_exp.txt
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

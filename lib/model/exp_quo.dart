@@ -1,5 +1,7 @@
 import 'dart:math';
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:tflite/tflite.dart';
 
 loadModel() async {
@@ -107,3 +109,20 @@ void main(List<String> arguments) async {
       }
   }
 }
+
+// class exp_quo extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     // TODO: implement build
+//     return Scaffold(
+//         appBar: AppBar(
+//             title: Text("Real_you")
+//         ),
+//         body: Center(
+//           child: RaisedButton(
+//               onPressed: () {
+//                 Navigator.pop(context);
+//               },
+//           ),
+//         )
+//     );
