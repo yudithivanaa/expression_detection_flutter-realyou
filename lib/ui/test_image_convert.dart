@@ -10,6 +10,8 @@ import 'package:tflite/tflite.dart';
 import 'package:object_detection/model/exp_quo.dart';
 import 'package:object_detection/ui/result_view.dart';
 
+import 'home_view.dart';
+
 class testImageConvert extends StatefulWidget {
   final List<String> listimagepath;
 
@@ -23,7 +25,7 @@ abstract class Quoter {
 }
 
 class AngryQuotes extends Quoter {
-  var quotes = {0: "angry me", 1: "angry you"};
+  var quotes = {0: "don't be mad just by such a thing, no need to ruin your days", 1: "it's okay if you don't have such a good day, don't keep keep it till sun goes die"};
 
   @override
   String getQuote(int index) {
@@ -32,35 +34,35 @@ class AngryQuotes extends Quoter {
 }
 
 class DisgustQuotes extends Quoter {
-  var quotes = {0: "digust me", 1: "disgust you"};
+  var quotes = {0: "ini memang hidupmu, wajar jika merasa muak, jangan lupa kalau kamu tidak sendiri ya", 1: "don't let that thing's around you anymore!"};
 
   @override
   String getQuote(int index) => quotes[index];
 }
 
 class FearQuotes extends Quoter {
-  var quotes = {0: "fear me", 1: "fear you"};
+  var quotes = {0: "orang pemberani bukanlah dia yang tidak merasa takut, tapi dia yang mengalahkan rasa takut itu", 1: "don't let your fear make you such a loser"};
 
   @override
   String getQuote(int index) => quotes[index];
 }
 
 class HappyQuotes extends Quoter {
-  var quotes = {0: "happy me", 1: "happy you"};
+  var quotes = {0: "happy is just a bunch of trigger to make your day!", 1: "bahagia itu sederhana, sesederhana melihat orang yang kita sayangi bahagia"};
 
   @override
   String getQuote(int index) => quotes[index];
 }
 
 class SadQuotes extends Quoter {
-  var quotes = {0: "sad me", 1: "sad you"};
+  var quotes = {0: "orang menangis bukan karena mereka lemah. Tapi, mereka menangis karena telah berusaha kuat dalam waktu yang lama", 1: "air mata yang menetes untuk orang lain bukanlah pertanda kelemahan. Itu adalah tanda hati yang murni"};
 
   @override
   String getQuote(int index) => quotes[index];
 }
 
 class SurpriseQuotes extends Quoter {
-  var quotes = {0: "surprise me", 1: "surprise you"};
+  var quotes = {0: "jika kita melakukan semua hal yang kita mampu lakukan, kita telah sungguh-sungguh membuat diri kita terkejut", 1: "tidak perlu terlalu kaget, perubahan ini hal yang biasa terjadi"};
 
   @override
   String getQuote(int index) => quotes[index];
@@ -68,8 +70,9 @@ class SurpriseQuotes extends Quoter {
 class _testImageConvertState extends State<testImageConvert> {
 
   List<String> imagePath;
+  String Quotes;
   bool _loading = false;
-  List<dynamic> _outputs = new List();
+  List<dynamic> _outputs ;
   Map<int, dynamic> outputmap = new Map();
 
   @override
@@ -80,69 +83,19 @@ class _testImageConvertState extends State<testImageConvert> {
 
     imagePath = widget.listimagepath;
     _loading = true;
-    //
-    // loadModel().then((value) {
-    //   setState(() {
-    //     log("PATH ${imagePath[i]}");
-    //     classifyImage(imagePath[i], 1);
-    //     _loading = false;
-    //   });
-    // });
 
     loadModel().then((value) {
       setState(() {
-        log("PATH ${imagePath[0]}");
-        classifyImage(imagePath[0], 0);
         _loading = false;
       });
     });
+
+    log("PATH ${imagePath[0]}");
+    classifyImage(imagePath[0], 0);
     // for (int i = 0; i < imagePath.length; i++) {
 
     // }
-    switch (outputmap[0]["index"]) {
-      case 1:
-        {
-          var selectedQuotes = AngryQuotes();
-          var index = math.Random().nextInt(2);
-          log("${selectedQuotes.getQuote(index)}");
-          break;
-        }
-      case 2:
-        {
-          var selectedQuotes = DisgustQuotes();
-          var index = math.Random().nextInt(2);
-          log("${selectedQuotes.getQuote(index)}");
-          break;
-        }
-      case 3:
-        {
-          var selectedQuotes = DisgustQuotes();
-          var index = math.Random().nextInt(2);
-          log("${selectedQuotes.getQuote(index)}");
-          break;
-        }
-      case 4:
-        {
-          var selectedQuotes = DisgustQuotes();
-          var index = math.Random().nextInt(2);
-          log("${selectedQuotes.getQuote(index)}");
-          break;
-        }
-      case 5:
-        {
-          var selectedQuotes = DisgustQuotes();
-          var index = math.Random().nextInt(2);
-          log("${selectedQuotes.getQuote(index)}");
-          break;
-        }
-      case 6:
-        {
-          var selectedQuotes = DisgustQuotes();
-          var index = math.Random().nextInt(2);
-          log("${selectedQuotes.getQuote(index)}");
-          break;
-        }
-    }
+
   }
 
   loadModel() async {
@@ -153,21 +106,75 @@ class _testImageConvertState extends State<testImageConvert> {
   }
 
   classifyImage(String imagePath, int index) async {
-    Tflite.runModelOnImage(
+    var output = await Tflite.runModelOnImage(
       path: imagePath,
       numResults: 2,
       threshold: 0.5,
       imageMean: 127.5,
       imageStd: 127.5,
-    ).then((value) {
-      setState(() {
-        _loading = false;
-        //Declare List _outputs in the class which will be used to show the classified classs name and confidence
-        // _outputs.add(value);
-        // log(_outputs[0]["label"]);
-        outputmap[index] = value;
-        log("INI OUTPUT $index ${outputmap[index]}");
-      });
+    );
+    setState(() {
+      _loading = false;
+      //Declare List _outputs in the class which will be used to show the classified classs name and confidence
+      // _outputs.add(value);
+      // log(_outputs[0]["label"]);
+      // outputmap[index] = value;
+      _outputs = output;
+      log(_outputs[0]["label"]);
+      // log(_outputs.toString());
+      log("INI OUTPUT $index ${_outputs[0].toString()}");
+      log("INI INDEX $index ${_outputs[0]["index"]}");
+
+      switch (_outputs[0]["index"]) {
+        case 0:
+          {
+            var selectedQuotes = AngryQuotes();
+            var index = math.Random().nextInt(2);
+            log("${selectedQuotes.getQuote(index)}");
+            Quotes=selectedQuotes.getQuote(index);
+            break;
+          }
+        case 1:
+          {
+            var selectedQuotes = DisgustQuotes();
+            var index = math.Random().nextInt(2);
+            log("${selectedQuotes.getQuote(index)}");
+            Quotes=selectedQuotes.getQuote(index);
+            break;
+          }
+        case 2:
+          {
+            var selectedQuotes = FearQuotes();
+            var index = math.Random().nextInt(2);
+            log("${selectedQuotes.getQuote(index)}");
+            Quotes=selectedQuotes.getQuote(index);
+            break;
+          }
+        case 3:
+          {
+            var selectedQuotes = HappyQuotes();
+            var index = math.Random().nextInt(2);
+            log("${selectedQuotes.getQuote(index)}");
+            Quotes=selectedQuotes.getQuote(index);
+            break;
+          }
+        case 4:
+          {
+            var selectedQuotes = SadQuotes();
+            var index = math.Random().nextInt(2);
+            log("${selectedQuotes.getQuote(index)}");
+            Quotes=selectedQuotes.getQuote(index);
+            break;
+          }
+        case 5:
+          {
+            var selectedQuotes = SurpriseQuotes();
+            var index = math.Random().nextInt(2);
+            log("${selectedQuotes.getQuote(index)}");
+            Quotes=selectedQuotes.getQuote(index);
+            break;
+          }
+      }
     });
   }
 
@@ -186,39 +193,8 @@ class _testImageConvertState extends State<testImageConvert> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // imagePath == null ? Container() : Image.file(File(imagePath)),
-                  // SizedBox(
-                  //   height: 20,
-                  // ),
-                  // _outputs != null
-                  //     ? Text(
-                  //         '${_outputs[0]["label"]}',
-                  //         style: TextStyle(
-                  //           color: Colors.black,
-                  //           fontSize: 20.0,
-                  //           background: Paint()..color = Colors.white,
-                  //         ),
-                  //       )
-                  //     : Container(),
-                  // RaisedButton(
-                  //   child: Text(
-                  //     'Lanjut',
-                  //     style: GoogleFonts.openSans(),
-                  //   ),
-                  //   onPressed: (){
-                  //     Navigator.pushReplacement(
-                  //         context,
-                  //         MaterialPageRoute(
-                  //             builder: (context) => ResultView(resultClassification: _outputs[0]["label"],)));
-                  //   },
-                  //   color: Colors.lightGreen,
-                  //   textColor: Colors.white,
-                  //   padding: EdgeInsets.all(8.0),
-                  //   splashColor: Colors.grey,
-                  // ),
-                ],
-              ),
-            ),
+                  StatsRow('Read this one:', '${Quotes}'),
+      ])),
     );
   }
 }
